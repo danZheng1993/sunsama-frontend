@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'http://ec2-3-95-186-23.compute-1.amazonaws.com/';
