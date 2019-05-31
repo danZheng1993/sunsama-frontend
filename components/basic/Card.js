@@ -51,7 +51,7 @@ const styles = {
   }
 };
 
-export default class Card extends React.Component {
+export class Card extends React.Component {
   constructor(props) {
     super(props);
     const { task: { checked } } = this.props;

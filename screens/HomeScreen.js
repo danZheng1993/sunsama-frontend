@@ -1,11 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ScreenWrapper from '../components/basic/ScreenWrapper';
-import Button from '../components/basic/Button';
-import Card from '../components/basic/Card';
-import DateSelector from '../components/home/DateSelector';
-import Minimap from '../components/home/Minimap';
+import { ScreenWrapper, Button, Card } from '../components/basic';
+import { DateSelector, Minimap } from '../components/home';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -33,7 +30,7 @@ export default class HomeScreen extends React.Component {
   }
 
   onConfirmMove = () => {
-    
+
   }
 
   setMinimapRef = (ref) => { this.minimap = ref; }

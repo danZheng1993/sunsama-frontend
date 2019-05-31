@@ -39,7 +39,7 @@ const styles = {
   },
 }
 
-export default class Minimap extends React.Component {
+export class Minimap extends React.Component {
   state = { show: false };
 
   aniVal = new Animated.Value(0);

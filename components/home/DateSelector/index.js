@@ -11,7 +11,7 @@ const styles = {
   }
 }
 
-export default class DateSelector extends React.Component {
+export class DateSelector extends React.Component {
   onOpen = () => {
     if (this.calendar) {
       this.calendar.openCalendar();

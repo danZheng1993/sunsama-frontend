@@ -10,7 +10,7 @@ const styles = {
   backgroundColor,
 };
 
-export default ({ children, style }) => (
+export const ScreenWrapper = ({ children, style }) => (
   <View style={[styles, style]}>
     <StatusBar />
     {children}
