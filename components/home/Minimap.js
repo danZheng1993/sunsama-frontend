@@ -67,7 +67,7 @@ export class Minimap extends React.Component {
   }
 
   render () {
-    const { curDate } = this.props;
+    const { curDate, onConfirmMove } = this.props;
     const { show } = this.state;
     const markedDates = {};
     set(markedDates, moment(curDate).format('YYYY-MM-DD'), { selected: true });
@@ -92,7 +92,7 @@ export class Minimap extends React.Component {
               markedDates={markedDates}
               calendarWidth={CALENDAR_WIDTH}
               hideExtraDays={false}
-              onDayPress={this.onSelectDate}
+              onDayPress={onConfirmMove}
               calendarHeight={300}
               theme={{
                 backgroundColor: 'transparent',

@@ -12,15 +12,19 @@ const styles = {
 }
 
 export class SignupForm extends React.Component {
-  state = { email: '', password: '', cPassword: '' };
+  state = { name: '', email: '', password: '', cPassword: '' };
 
+  onChangeName = (name) => { this.setState({ name }); }
   onChangeEmail = (email) => { this.setState({ email }); }
-
   onChangePassword = (password) => { this.setState({ password }); }
   onChangeConfirmPassword = (cPassword) => { this.setState({ cPassword }); }
 
   onRegister = () => {
     const { email, cPassword, password } = this.state;
+    if (name === '') {
+      Alert.alert('Name cannot be empty');
+      return;
+    }
     if (email === '') {
       Alert.alert('Email cannot be empty');
       return;
@@ -40,6 +44,7 @@ export class SignupForm extends React.Component {
     const { onLogin } = this.props;
     return (
       <View style={styles.wrapper}>
+        <Input placeholder="Full Name" onChangeText={this.onChangeName} />
         <Input placeholder="User Email" onChangeText={this.onChangeEmail} />
         <Input placeholder="Password" secureTextEntry onChangeText={this.onChangePassword} />
         <Input placeholder="Confirm Password" secureTextEntry onChangeText={this.onChangeConfirmPassword} />

@@ -1,39 +1,26 @@
 /* eslint-disable */
-import { ApolloClient, createNetworkInterface } from 'react-apollo'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+
 import { BACKEND_URL } from '../config';
 
-const networkInterface = createNetworkInterface({
-  uri: `${BACKEND_URL}/graphql/`,
-});
-
-networkInterface
-  .useAfter([
-    {
-      applyAfterware({ response }, next) {
-        if (response.status === 401) {
-          console.log('401 error')
-        }
-        next()
-      },
-    },
-  ]);
-
-let connectionsCount = 0
-
-export const apolloClient = new ApolloClient({
-  networkInterface,
-  dataIdFromObject: o => {
-    if (o.id) {
-      return `${o.__typename}-${o.id}`
-    } else if (o.node) {
-      return `${o.__typename}-${o.node.id}`
-    } else if (o.cursor) {
-      return `${o.__typename}-${o.cursor}`
-    } else {
-      connectionsCount++
-      return `${o.__typename}-${connectionsCount}`
+export const initApolloClient = (token = '') => {
+  const httpLink = createHttpLink({
+    uri: `${BACKEND_URL}/graphql`
+  });
+  const  authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? token : "",
+      }
     }
+  });
 
-    return o.__typename
-  },
-})
+  return new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  })
+}

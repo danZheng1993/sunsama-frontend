@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import { Input, Button } from '../basic';
 import { foregroundColor } from '../styleConf';
@@ -20,6 +20,13 @@ export class LoginForm extends React.Component {
 
   onLogin = () => {
     const { email, password } = this.state;
+    if (email === '') {
+      Alert.alert('Email cannot be empty');
+      return;
+    }
+    if (password === '') {
+      Alert.alert('Password cannot be empty');
+    }
     this.props.onLogin(email, password);
   }
 

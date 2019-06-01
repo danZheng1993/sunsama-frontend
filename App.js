@@ -1,7 +1,11 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
 import { AppLoading, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+
+import AppWrapper from './AppWrapper';
+import store, { persistor } from './store';
 
 export default class App extends React.Component {
   state = {
@@ -21,7 +25,11 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <Provider store={store}>
+            <PersistGate persistor={persistor}>
+              <AppWrapper />
+            </PersistGate>
+          </Provider>
         </View>
       );
     }
