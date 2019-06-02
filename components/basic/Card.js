@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, PanResponder, Animated, Dimensions, Alert } from 'react-native';
+import { View, Text, PanResponder, Animated, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { foregroundColor, primaryTextColor, deactiveColor, activeColor, shadowProps, positiveColor, negativeColor } from '../styleConf';
@@ -131,7 +131,7 @@ export class Card extends React.Component {
   horizontalAnival = new Animated.Value(0);
 
   render() {
-    const { task: { title, checked }, onPress } = this.props;
+    const { task: { _id, title, checked }, onPress, onCheck } = this.props;
     const { status } = this.state;
     return (
       <View style={styles.wrapper}>
@@ -150,11 +150,13 @@ export class Card extends React.Component {
           {...this.panResponder.panHandlers}
         >
           <Text numberOfLines={5} ellipsizeMode="tail" style={styles.text}>{title}</Text>
-          { checked ? (
-            <Ionicons name="ios-checkmark-circle" color={activeColor} size={20} />
-          ) : (
-            <Ionicons name="ios-checkmark-circle-outline" color={deactiveColor} size={20} />
-          )}
+          <TouchableOpacity disabled={checked} onPressIn={() => onCheck(_id)}>
+            { checked ? (
+              <Ionicons name="ios-checkmark-circle" color={activeColor} size={20} />
+            ) : (
+              <Ionicons name="ios-checkmark-circle-outline" color={deactiveColor} size={20} />
+            )}
+          </TouchableOpacity>
         </Animated.View>
       </View>
     )

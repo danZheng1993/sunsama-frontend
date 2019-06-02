@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
 import { ApolloProvider } from 'react-apollo';
 
 import { AuthStack, HomeStack } from './navigation';

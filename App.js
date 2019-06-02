@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { AppLoading, Font, Icon } from 'expo';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 
+import './ReactotronConfig';
 import AppWrapper from './AppWrapper';
 import store, { persistor } from './store';
 

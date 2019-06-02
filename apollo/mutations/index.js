@@ -43,5 +43,10 @@ export const Mutations = {
         }
       }
     }
-  `
+  `,
+  taskDeleteMutation: gql`
+    mutation($id:ID!) {
+      taskDelete(id:$id)
+    }
+  `,
 };

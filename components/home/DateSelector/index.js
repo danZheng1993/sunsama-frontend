@@ -39,7 +39,7 @@ export class DateSelector extends React.Component {
   }
 
   onSelectDate = (date) => {
-    this.props.onChangeDate(date.timestamp);
+    this.props.onChangeDate(date.dateString);
     this.closeSelector();
   }
 

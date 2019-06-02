@@ -1,18 +1,19 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { Query, withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 import moment from 'moment';
-import get from 'lodash.get';
 
-import { ScreenWrapper, Button, Card } from '../components/basic';
-import { DateSelector, Minimap, TaskList } from '../components/home';
+import { ScreenWrapper } from '../components/basic';
+import { DateSelector, Minimap, TaskList, AddTask } from '../components/home';
 
-import { Queries } from '../apollo';
+import { Logout } from '../store/actions/auth';
 
-export default class HomeScreen extends React.Component {
+import { Mutations } from '../apollo';
+
+class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
+    editingId: '',
   };
 
   state = { curDate: new Date() }
@@ -29,47 +30,65 @@ export default class HomeScreen extends React.Component {
   }
 
   onRemove = id => () => {
-    console.log(id);
+    const { client } = this.props;
+    client.mutate({
+      mutation: Mutations.taskDeleteMutation,
+      variables: { id },
+      update: this.onUpdate,
+    })
   }
 
   onCancelMove = () => {
     const { editingId } = this.state;
-    if (this.minimap) {
+    if (this.taskList) {
       this.taskList.cancelMove(editingId);
     }
   }
 
   onConfirmMove = (date) => {
-    console.log(date);
+    const { editingId } = this.state;
+    const { client } = this.props;
+    if (this.minimap) {
+      this.minimap.hide();
+    }
+    client.mutate({
+      mutation: Mutations.taskUpdateMutation,
+      variables: { id: editingId, time: date.dateString },
+      update: this.onUpdate,
+    });
+  }
+
+  onCheckCard = (id) => {
+    client.mutate({
+      mutation: Mutations.taskUpdateMutation,
+      variables: { id, checked: true },
+      update: this.onUpdate,
+    });
+  }
+
+  onUpdate = () => {
+    if(this.taskList) {
+      this.taskList.updateInfo();
+    }
   }
 
   setMinimapRef = (ref) => { this.minimap = ref; }
-  setTaskListRef = (ref) => { this.taskList = ref; }
+  setTaskListRef = (ref) => { this.taskList = ref.wrappedInstance; }
 
   render() {
-    const { curDate } = this.state;
+    const { curDate, Logout } = this.state;
     return (
       <ScreenWrapper>
         <DateSelector curDate={curDate} onChangeDate={this.onChangeDate} />
-        <Query
-          query={Queries.tasksQuery}
-          fetchPolicy="cache-first"
-          variables={{ date: moment(curDate).format('YYYY-MM-DD') }}
-        >
-          {({ loading, error, data, refetch }) => {
-            if (loading) return <Text>Loading</Text>;
-            if (error) { console.log(error); return false;}
-            return (
-              <TaskList
-                ref={this.setTaskListRef}
-                data={get(data, 'tasks.tasks', [])}
-                refetch={refetch}
-                onMove={this.onMove}
-                onRemove={this.onRemove}
-              />
-            );
-          }}
-        </Query>
+        <AddTask curDate={curDate} onUpdate={this.onUpdate} />
+        <TaskList
+          curDate={curDate}
+          ref={this.setTaskListRef}
+          onMove={this.onMove}
+          onRemove={this.onRemove}
+          onError={Logout}
+          onCheckCard={this.onCheckCard}
+        />
         <Minimap
           curDate={curDate}
           ref={this.setMinimapRef}
@@ -80,3 +99,7 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = { Logout };
+
+export default connect(null, mapDispatchToProps)(withApollo(HomeScreen));
