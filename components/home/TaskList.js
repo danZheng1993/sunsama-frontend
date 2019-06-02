@@ -82,7 +82,19 @@ class TaskList extends React.Component {
 
   getData = () => {
     const { data } = this.props;
-    return get(data, 'tasks.tasks', []);
+    const tasks = get(data, 'tasks.tasks', []);
+    const result = [];
+    tasks.forEach(el => {
+      if (!el.checked) {
+        result.push(el);
+      }
+    });
+    tasks.forEach(el => {
+      if (el.checked) {
+        result.push(el);
+      }
+    });
+    return result;
   }
   
   render() {
@@ -106,7 +118,6 @@ export default graphql(
       return {
         variables: { date: moment(props.curDate).format('YYYY-MM-DD') },
         fetchPolicy: 'network-only',
-        onError: props.onError
       };
     },
     withRef: true,

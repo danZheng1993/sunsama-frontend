@@ -59,6 +59,7 @@ class HomeScreen extends React.Component {
   }
 
   onCheckCard = (id) => {
+    const { client } = this.props;
     client.mutate({
       mutation: Mutations.taskUpdateMutation,
       variables: { id, checked: true },

@@ -57,8 +57,14 @@ export class Card extends React.Component {
     const { task: { checked } } = this.props;
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => !checked,
-      onStartShouldSetPanResponderCapture: () => !checked,
-      onMoveShouldSetPanResponder: (evt, gestureState) => !checked,
+      onStartShouldSetPanResponderCapture: () => false,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        if (!checked) {
+          const { dx, dy } = gestureState;
+          return dx > 10 || dx < -10 || dy > 10 || dy < -10;
+        }
+        return false;
+      },
       onMoveShouldSetPanResponderCapture: () => !checked,
       onPanResponderMove: (evt, gestureState) => {
         const { status } = this.state;
@@ -102,6 +108,11 @@ export class Card extends React.Component {
     ]);
   }
 
+  onPress = () => {
+    const { task: { _id }, onCheck } = this.props;
+    onCheck(_id);
+  }
+
   resetMove() {
     Animated.timing(this.horizontalAnival, {
       toValue: 0,
@@ -127,7 +138,7 @@ export class Card extends React.Component {
     });
   }
 
-  state = { status: 'move' }
+  state = { status: 'move' };
   horizontalAnival = new Animated.Value(0);
 
   render() {
@@ -146,11 +157,10 @@ export class Card extends React.Component {
             checked && styles.checked,
             { marginLeft: this.horizontalAnival }
           ]}
-          onPress={onPress}
-          {...this.panResponder.panHandlers}
+          {... (!checked ? this.panResponder.panHandlers : {})}
         >
           <Text numberOfLines={5} ellipsizeMode="tail" style={styles.text}>{title}</Text>
-          <TouchableOpacity disabled={checked} onPressIn={() => onCheck(_id)}>
+          <TouchableOpacity disabled={checked} onPressIn={this.onPress}>
             { checked ? (
               <Ionicons name="ios-checkmark-circle" color={activeColor} size={20} />
             ) : (

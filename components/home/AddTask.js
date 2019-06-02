@@ -12,7 +12,7 @@ class AddTask extends React.Component {
   onChangeTitle = (title) => { this.setState({ title }) };
   onChangeDescription = (description) => { this.setState({ description }) };
 
-  showModal = () => { this.setState({ showModal: true }); }
+  showModal = () => { this.setState({ showModal: true, title: '', description: '' }); }
   hideModal = () => { this.setState({ showModal: false }); }
 
   submitData = () => {
@@ -36,6 +36,7 @@ class AddTask extends React.Component {
             <Input placeholder="Title" onChangeText={this.onChangeTitle} />
             <Input placeholder="Description" numberOfLine={5} onChangeText={this.onChangeDescription} />
             <Button title="Confirm" type="primary" onPress={this.submitData} />
+            <Button title="Cancel" type="cancel" onPress={this.hideModal} />
           </View>
         </Modal>
       </View>

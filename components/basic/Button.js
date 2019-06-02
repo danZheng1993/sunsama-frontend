@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
-import { foregroundColor, buttonTextColor, shadowProps, positiveColor, activeColor } from '../styleConf';
+import { foregroundColor, buttonTextColor, shadowProps, positiveColor, activeColor, negativeColor } from '../styleConf';
 
 const getBgColor = (type) => {
   switch (type) {
@@ -9,6 +9,8 @@ const getBgColor = (type) => {
       return positiveColor;
     case 'secondary':
       return activeColor;
+    case 'cancel':
+      return negativeColor;
     default:
       return foregroundColor;
   }
@@ -16,12 +18,10 @@ const getBgColor = (type) => {
 
 const getTxtColor = (type) => {
   switch(type) {
-    case 'primary':
-      return foregroundColor;
-    case 'secondary':
-      return foregroundColor;
-    default:
+    case 'default':
       return buttonTextColor;
+    default:
+      return foregroundColor;
   }
 }
 
