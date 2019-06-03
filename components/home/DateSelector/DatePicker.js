@@ -3,9 +3,15 @@ import { View, TouchableOpacity, Text, Animated } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 
+import LogoutButton from './LogoutButton';
 import { primaryTextColor, secondaryTextColor } from '../../styleConf';
 
 const styles = {
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   wrapper: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -76,27 +82,30 @@ export default class DatePicker extends React.Component {
   render() {
     const { weekday, date } = this.getDateString();
     return (
-      <TouchableOpacity style={styles.wrapper} onPress={this.onPress}>
-        <View style={styles.dateContent}>
-          <Text style={styles.weekday}>{weekday}</Text>
-          <Text style={styles.date}>{date}</Text>
-        </View>
-        <Animated.View
-          style={[
-            styles.indicator,
-            {
-              transform: [{
-                rotate: this.aniVal.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['-90deg', '0deg']
-                })
-              }]
-            }
-          ]}
-        >
-          <Entypo name="triangle-right" color="black" size={15} />
-        </Animated.View>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.wrapper} onPress={this.onPress}>
+          <View style={styles.dateContent}>
+            <Text style={styles.weekday}>{weekday}</Text>
+            <Text style={styles.date}>{date}</Text>
+          </View>
+          <Animated.View
+            style={[
+              styles.indicator,
+              {
+                transform: [{
+                  rotate: this.aniVal.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['-90deg', '0deg']
+                  })
+                }]
+              }
+            ]}
+          >
+            <Entypo name="triangle-right" color="black" size={15} />
+          </Animated.View>
+        </TouchableOpacity>
+        <LogoutButton />
+      </View>
     )
   }
 }

@@ -20,7 +20,7 @@ export class SignupForm extends React.Component {
   onChangeConfirmPassword = (cPassword) => { this.setState({ cPassword }); }
 
   onRegister = () => {
-    const { email, cPassword, password } = this.state;
+    const { name, email, cPassword, password } = this.state;
     if (name === '') {
       Alert.alert('Name cannot be empty');
       return;
@@ -37,7 +37,7 @@ export class SignupForm extends React.Component {
       Alert.alert('Password mismatch');
       return;
     }
-    this.props.onRegister(email, password);
+    this.props.onRegister(name, email, password);
   }
 
   render() {
